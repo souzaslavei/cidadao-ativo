@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cidadão Ativo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="toast" class="toast"></div>
+
+    <div id="screen-login" class="screen active">
+        <div class="login-container">
+            <div class="logo">Cidadão<span>Ativo</span></div>
+            <p>Sua cidade na palma da sua mão.</p>
+            <input type="text" placeholder="E-mail ou CPF">
+            <input type="password" placeholder="Senha">
+            <button class="btn-main" onclick="goTo('screen-home')">Entrar</button>
+            <div class="login-footer">Esqueceu a senha? <span>Criar conta</span></div>
+        </div>
+    </div>
+
+    <div id="screen-home" class="screen">
+        <header class="main-header">
+            <div class="user-info">
+                <div class="avatar">JS</div>
+                <div>
+                    <div class="welcome">Olá, João Silva</div>
+                    <div class="location">Fortaleza, CE</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button onclick="toggleContrast()">🌓</button>
+                <button onclick="toggleAccessible()">Aa</button>
+            </div>
+        </header>
+
+        <main class="content">
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-val">12</div>
+                    <div class="stat-label">Minhas Ocorrências</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val">450</div>
+                    <div class="stat-label">Pontos Cidadãos</div>
+                </div>
+            </section>
+
+            <h3>Ocorrências Próximas</h3>
+            <div class="occ-list">
+                <div class="occ-item">
+                    <div class="occ-badge danger">Grave</div>
+                    <h4>Buraco na Via Principal</h4>
+                    <p>Rua das Flores, 123 - Centro</p>
+                    <div class="occ-footer">
+                        <span>Há 2 horas</span>
+                        <button class="btn-sm" onclick="confirmOcc(this)">✓ 24</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="goTo('screen-home')">🏠<span>Início</span></button>
+            <button class="nav-item" onclick="goTo('screen-map')">📍<span>Mapa</span></button>
+            <button class="nav-item plus" onclick="goTo('screen-report')">+</button>
+            <button class="nav-item">📊<span>Dados</span></button>
+            <button class="nav-item">👤<span>Perfil</span></button>
+        </nav>
+    </div>
+
+    <div id="screen-success" class="screen">
+        <div class="success-content">
+            <div class="success-icon">✓</div>
+            <h2>Relato Enviado!</h2>
+            <p>Sua contribuição ajuda a tornar nossa cidade melhor para todos.</p>
+            <button class="btn-main" onclick="goTo('screen-home')">Voltar ao Início</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
