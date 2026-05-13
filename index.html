@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cidadão Ativo</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-dark: #1F5E4A;
+  --green-mid: #2E8B57;
+  --green-light: #3DAB72;
+  --green-pale: #E8F5EE;
+  --white: #FFFFFF;
+  --gray-50: #F8FAFB;
+  --gray-100: #F0F4F2;
+  --gray-200: #DDE8E3;
+  --gray-400: #8FA89E;
+  --gray-600: #4A6059;
+  --gray-800: #1E2E28;
+  --yellow: #F5A623;
+  --yellow-light: #FFF3DC;
+  --blue: #3B7DD8;
+  --blue-light: #EBF2FF;
+  --red: #E05353;
+  --red-light: #FDEAEA;
+  --orange: #E87B3B;
+  --shadow-sm: 0 1px 4px rgba(31,94,74,0.08);
+  --shadow-md: 0 4px 16px rgba(31,94,74,0.12);
+  --shadow-lg: 0 8px 32px rgba(31,94,74,0.16);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --font-main: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--gray-50);
+  color: var(--gray-800);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- APP SHELL ---- */
+.app-shell {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--white);
+  position: relative;
+  box-shadow: 0 0 60px rgba(0,0,0,0.12);
+}
+
+/* ---- SCREENS ---- */
+.screen {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+.screen.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- LOGIN SCREEN ---- */
+#screen-login {
+  background: linear-gradient(165deg, var(--green-dark) 0%, #163D30 45%, #0D2820 100%);
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg-pattern {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(46,139,87,0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(61,171,114,0.15) 0%, transparent 45%);
+  pointer-events: none;
+}
+
+.login-top {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 80px;
+}
+
+.login-logo {
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  margin-bottom: 20px;
+}
+
+.login-logo svg { width: 40px; height: 40px; }
+
+.login-title {
+  font-family: var(--font-main);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.login-slogan {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  max-width: 220px;
+  line-height: 1.5;
+}
+
+.login-card {
+  background: var(--white);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 36px 28px 40px;
+  width: 100%;
+}
+
+.login-card h2 {
+  font-family: var(--font-main);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+
+.login-card p {
+  font-size: 14px;
+  color: var(--gray-400);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-family: var(--font-main);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gray-800);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-google:hover { border-color: var(--green-mid); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-google svg { width: 22px; height: 22px; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--gray-200);
+}
+.divider span { font-size: 13px; color: var(--gray-400); }
+
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+  padding: 16px;
+  background: var(--green-dark);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-main);
+  font-size: 15px; font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(31,94,74,0.35);
+}
+.btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+.accessibility-row {
+  display: flex; gap: 10px; margin-top: 20px;
+}
+
+.btn-access {
+  flex: 1; padding: 12px 8px;
+  background: var(--gray-100);
+  border: none; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 500; color: var(--gray-600);
+  cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.btn-access:hover { background: var(--green-pale); color: var(--green-dark); }
+.btn-access span:first-child { font-size: 18px; }
+
+/* ---- ONBOARDING SCREEN ---- */
+#screen-onboard {
+  background: var(--white);
+}
+
+.onboard-header {
+  padding: 56px 28px 24px;
+  background: var(--green-pale);
+}
+
+.onboard-step {
+  display: flex; gap: 6px; margin-bottom: 20px;
+}
+.step-dot {
+  height: 4px; border-radius: 2px;
+  background: var(--gray-200);
+  flex: 1;
+  transition: background 0.3s;
+}
+.step-dot.active { background: var(--green-mid); }
+
+.onboard-header h2 {
+  font-family: var(--font-main);
+  font-size: 24px; font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 6px;
+}
+.onboard-header p { font-size: 14px; color: var(--gray-600); line-height: 1.5; }
+
+.onboard-body { padding: 28px; flex: 1; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label {
+  display: block;
+  font-size: 13px; font-weight: 600;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.form-input {
+  width: 100%; padding: 14px 16px;
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 15px; color: var(--gray-800);
+  transition: all 0.2s;
+  outline: none;
+}
+.form-input:focus { border-color: var(--green-mid); background: var(--white); box-shadow: 0 0 0 3px rgba(46,139,87,0.1); }
+
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 10px 18px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 40px;
+  font-size: 14px; font-weight: 500; color: var(--gray-600);
+  cursor: pointer; transition: all 0.2s;
+  background: var(--white);
+}
+.chip.selected { border-color: var(--green-mid); background: var(--green-pale); color: var(--green-dark); }
+
+.onboard-footer { padding: 16px 28px 32px; }
+
+/* ---- NAV BAR ---- */
+.navbar {
+  position: sticky; bottom: 0;
+  background: var(--white);
+  border-top: 1px solid var(--gray-100);
+  display: flex;
+  padding: 8px 0 16px;
+  z-index: 100;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: none; border: none;
+}
+
+.nav-icon {
+  width: 24px; height: 24px;
+  color: var(--gray-400);
+  transition: color 0.2s;
+}
+
+.nav-label {
+  font-size: 10px; font-weight: 500;
+  color: var(--gray-400);
+  transition: color 0.2s;
+}
+
+.nav-item.active .nav-icon,
+.nav-item.active .nav-label { color: var(--green-mid); }
+
+.nav-item.active .nav-icon {
+  filter: drop-shadow(0 2px 6px rgba(46,139,87,0.3));
+}
+
+/* ---- HOME SCREEN ---- */
+#screen-home { background: var(--gray-50); }
+
+.home-header {
+  background: var(--white);
+  padding: 52px 20px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.home-greeting { font-size: 13px; color: var(--gray-400); font-weight: 400; }
+.home-name { font-family: var(--font-main); font-size: 20px; font-weight: 700; color: var(--gray-800); margin-top: 2px; }
+
+.home-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  border: 2px solid var(--green-pale);
+}
+
+.map-container {
+  position: relative;
+  margin: 12px 16px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 260px;
+  box-shadow: var(--shadow-md);
+}
+
+.map-mock {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #E8F0EB 0%, #D4E6DB 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* SVG Map Grid */
+.map-mock::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(46,139,87,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,139,87,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.map-roads {
+  position: absolute; inset: 0;
+}
+
+.map-road-h {
+  position: absolute; height: 8px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 4px;
+}
+.map-road-v {
+  position: absolute; width: 8px;
+  background: rgba(255,255,255,0.7);
+  border-radius: 4px;
+}
+
+.map-label {
+  position: absolute;
+  font-size: 9px; font-weight: 600;
+  color: rgba(31,94,74,0.5);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+.map-marker {
+  position: absolute;
+  width: 32px; height: 32px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+.map-marker:hover { transform: rotate(-45deg) scale(1.2); }
+.map-marker span { transform: rotate(45deg); font-size: 14px; }
+
+.map-marker.yellow { background: var(--yellow); }
+.map-marker.red { background: var(--red); }
+.map-marker.blue { background: var(--blue); }
+.map-marker.green { background: var(--green-mid); }
+
+.map-controls {
+  position: absolute; right: 12px; top: 12px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.map-btn {
+  width: 36px; height: 36px;
+  background: var(--white);
+  border: none; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 18px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+.map-btn:hover { box-shadow: var(--shadow-md); }
+
+.map-my-loc {
+  position: absolute; left: 12px; bottom: 12px;
+  background: var(--green-dark);
+  color: white;
+  border: none; border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-md);
+}
+
+.fab {
+  position: absolute;
+  right: -4px; bottom: -4px;
+  transform: translate(-50%, -50%);
+  width: 52px; height: 52px;
+  background: var(--green-dark);
+  border: none; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(31,94,74,0.4);
+  transition: all 0.2s;
+  z-index: 10;
+}
+.fab:hover { transform: translate(-50%, -50%) scale(1.08); }
+.fab svg { width: 24px; height: 24px; color: white; }
+
+.section-header {
+  padding: 16px 20px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.section-title {
+  font-family: var(--font-main);
+  font-size: 16px; font-weight: 700;
+  color: var(--gray-800);
+}
+.section-link {
+  font-size: 13px; font-weight: 600; color: var(--green-mid);
+  background: none; border: none; cursor: pointer;
+}
+
+.alerts-row {
+  display: flex; gap: 10px;
+  padding: 0 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.alerts-row::-webkit-scrollbar { display: none; }
+
+.alert-card {
+  flex-shrink: 0;
+  width: 160px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid;
+}
+.alert-card.yellow { border-color: var(--yellow); }
+.alert-card.blue { border-color: var(--blue); }
+.alert-card.red { border-color: var(--red); }
+
+.alert-icon { font-size: 22px; margin-bottom: 6px; }
+.alert-title { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+.alert-sub { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
+
+.occurrences-list { padding: 0 16px 80px; }
+
+.occ-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: var(--shadow-sm);
+  display: flex; gap: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.occ-card:hover { box-shadow: var(--shadow-md); transform: translateX(2px); }
+
+.occ-icon-wrap {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.occ-icon-wrap.yellow { background: var(--yellow-light); }
+.occ-icon-wrap.blue { background: var(--blue-light); }
+.occ-icon-wrap.red { background: var(--red-light); }
+.occ-icon-wrap.green { background: var(--green-pale); }
+
+.occ-info { flex: 1; }
+.occ-title { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 3px; }
+.occ-meta { font-size: 12px; color: var(--gray-400); }
+
+.occ-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+.badge-open { background: var(--red-light); color: var(--red); }
+.badge-analysis { background: var(--yellow-light); color: #B87A00; }
+.badge-resolved { background: var(--green-pale); color: var(--green-dark); }
+.badge-confirmed { background: var(--blue-light); color: var(--blue); }
+
+.confirm-btn {
+  font-size: 11px; font-weight: 600;
+  color: var(--gray-400);
+  background: var(--gray-100);
+  border: none; border-radius: 20px;
+  padding: 4px 10px;
+  cursor: pointer; transition: all 0.2s;
+}
+.confirm-btn:hover { color: var(--green-mid); background: var(--green-pale); }
+.confirm-count { font-size: 11px; color: var(--gray-400); }
+
+/* ---- MAP FULL SCREEN ---- */
+#screen-map { background: var(--gray-50); }
+
+.map-full-header {
+  padding: 52px 20px 16px;
+  background: var(--white);
+  display: flex; align-items: center; gap: 12px;
+}
+.map-full-header h2 {
+  font-family: var(--font-main);
+  font-size: 20px; font-weight: 700; flex: 1;
+}
+
+.filter-row {
+  display: flex; gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 13px; font-weight: 500;
+  background: var(--white);
+  border: 1.5px solid var(--gray-200);
+  color: var(--gray-600);
+  cursor: pointer; transition: all 0.2s;
+}
+.filter-chip.active {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--white);
+}
+
+.map-full-container {
+  margin: 0 16px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 340px;
+  box-shadow: var(--shadow-md);
+}
+
+.map-full-container .map-mock {
+  height: 100%;
+}
+
+.heatmap-overlay {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(230,80,80,0.25) 0%, transparent 40%),
+    radial-gradient(circle at 70% 30%, rgba(245,166,35,0.2) 0%, transparent 35%),
+    radial-gradient(circle at 55% 65%, rgba(59,125,216,0.15) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.map-legend {
+  margin: 12px 16px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex; gap: 16px; flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--gray-600);
+}
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+
+/* ---- REPORT SCREEN ---- */
+#screen-report { background: var(--white); }
+
+.report-header {
+  padding: 52px 20px 20px;
+  background: var(--green-dark);
+}
+.report-header-top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.back-btn {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.15);
+  border: none; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: white; font-size: 20px;
+}
+.report-header h2 {
+  font-family: var(--font-main);
+  font-size: 22px; font-weight: 700;
+  color: var(--white);
+}
+.report-header p { font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+
+.report-body { padding: 24px 20px 100px; overflow-y: auto; }
+
+.category-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-bottom: 24px;
+}
+
+.cat-item {
+  background: var(--gray-50);
+  border: 2px solid var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 14px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  cursor: pointer; transition: all 0.2s;
+}
+.cat-item.selected {
+  border-color: var(--green-mid);
+  background: var(--green-pale);
+}
+.cat-icon { font-size: 26px; }
+.cat-label { font-size: 11px; font-weight: 600; color: var(--gray-600); text-align: center; }
+.cat-item.selected .cat-label { color: var(--green-dark); }
+
+.photo-upload {
+  background: var(--gray-50);
+  border: 2px dashed var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 20px;
+}
+.photo-upload:hover { border-color: var(--green-mid); background: var(--green-pale); }
+.photo-upload span:first-child { font-size: 36px; }
+.photo-upload span:last-child { font-size: 13px; color: var(--gray-400); font-weight: 500; }
+
+.gps-tag {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--green-pale);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 20px;
+}
+.gps-tag span { font-size: 20px; }
+.gps-text { font-size: 13px; font-weight: 600; color: var(--green-dark); }
+.gps-sub { font-size: 12px; color: var(--gray-400); }
+
+.form-textarea {
+  width: 100%; padding: 14px 16px;
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 15px; color: var(--gray-800);
+  resize: none; outline: none;
+  transition: all 0.2s;
+  min-height: 100px;
+}
+.form-textarea:focus { border-color: var(--green-mid); background: var(--white); }
+
+.report-footer {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  padding: 16px 20px 28px;
+  background: var(--white);
+  border-top: 1px solid var(--gray-100);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+
+/* ---- SERVICES SCREEN ---- */
+#screen-services { background: var(--gray-50); }
+
+.services-header {
+  padding: 52px 20px 20px;
+  background: var(--white);
+}
+.services-header h2 {
+  font-family: var(--font-main);
+  font-size: 22px; font-weight: 700;
+  color: var(--gray-800); margin-bottom: 4px;
+}
+.services-header p { font-size: 14px; color: var(--gray-400); }
+
+.emergency-card {
+  margin: 12px 16px;
+  background: linear-gradient(135deg, var(--red) 0%, #C43C3C 100%);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; box-shadow: 0 4px 16px rgba(224,83,83,0.3);
+}
+.emergency-icon { font-size: 32px; }
+.emergency-text h3 { font-family: var(--font-main); font-size: 16px; font-weight: 700; color: white; }
+.emergency-text p { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+.emergency-arrow { margin-left: auto; font-size: 20px; color: rgba(255,255,255,0.6); }
+
+.services-section { padding: 8px 16px; margin-bottom: 4px; }
+.services-section-title {
+  font-size: 12px; font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 10px; margin-top: 8px;
+}
+
+.service-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+.service-card:hover { box-shadow: var(--shadow-md); transform: translateX(2px); }
+
+.service-icon-wrap {
+  width: 46px; height: 46px; flex-shrink: 0;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.service-icon-wrap.green { background: var(--green-pale); }
+.service-icon-wrap.blue { background: var(--blue-light); }
+.service-icon-wrap.yellow { background: var(--yellow-light); }
+.service-icon-wrap.red { background: var(--red-light); }
+
+.service-info { flex: 1; }
+.service-name { font-size: 14px; font-weight: 600; color: var(--gray-800); margin-bottom: 2px; }
+.service-detail { font-size: 12px; color: var(--gray-400); }
+
+.service-status {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.status-dot.open { background: var(--green-mid); }
+.status-dot.closed { background: var(--red); }
+.status-text { font-size: 11px; font-weight: 500; }
+.status-text.open { color: var(--green-mid); }
+.status-text.closed { color: var(--red); }
+
+/* ---- DASHBOARD SCREEN ---- */
+#screen-dashboard { background: var(--gray-50); }
+
+.dashboard-header {
+  padding: 52px 20px 16px;
+  background: var(--white);
+}
+.dashboard-header h2 {
+  font-family: var(--font-main);
+  font-size: 22px; font-weight: 700; color: var(--gray-800);
+}
+.dashboard-header p { font-size: 14px; color: var(--gray-400); margin-top: 2px; }
+
+.stats-row {
+  display: flex; gap: 10px;
+  padding: 12px 16px;
+}
+.stat-card {
+  flex: 1;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.stat-value {
+  font-family: var(--font-main);
+  font-size: 26px; font-weight: 700;
+  color: var(--green-dark);
+  display: block;
+}
+.stat-label { font-size: 11px; color: var(--gray-400); font-weight: 500; margin-top: 2px; }
+
+.chart-card {
+  margin: 0 16px 12px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.chart-title {
+  font-family: var(--font-main);
+  font-size: 15px; font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 14px;
+}
+.chart-subtitle { font-size: 12px; color: var(--gray-400); margin-bottom: 12px; }
+
+/* Bar Chart */
+.bar-chart { display: flex; gap: 6px; align-items: flex-end; height: 100px; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bar {
+  width: 100%; border-radius: 6px 6px 0 0;
+  transition: height 0.3s ease;
+}
+.bar-lbl { font-size: 10px; color: var(--gray-400); }
+.bar-val { font-size: 11px; font-weight: 700; color: var(--gray-800); }
+
+/* Horizontal bars */
+.h-bar-list { display: flex; flex-direction: column; gap: 10px; }
+.h-bar-item { display: flex; flex-direction: column; gap: 4px; }
+.h-bar-row { display: flex; align-items: center; gap: 8px; }
+.h-bar-label { font-size: 13px; color: var(--gray-800); font-weight: 500; flex: 0 0 110px; }
+.h-bar-track { flex: 1; height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; }
+.h-bar-fill { height: 100%; border-radius: 4px; }
+.h-bar-count { font-size: 12px; font-weight: 700; color: var(--gray-800); flex: 0 0 28px; text-align: right; }
+
+.heat-row {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  margin-top: 8px;
+}
+.heat-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+}
+
+/* ---- PROFILE SCREEN ---- */
+#screen-profile { background: var(--gray-50); }
+
+.profile-header {
+  background: linear-gradient(160deg, var(--green-dark) 0%, #163D30 100%);
+  padding: 56px 20px 28px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.profile-avatar-wrap {
+  position: relative; margin-bottom: 14px;
+}
+.profile-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  border: 3px solid rgba(255,255,255,0.3);
+}
+.profile-level-badge {
+  position: absolute; bottom: 0; right: -4px;
+  background: var(--yellow);
+  border-radius: 12px;
+  padding: 3px 8px;
+  font-size: 10px; font-weight: 700; color: white;
+}
+
+.profile-name {
+  font-family: var(--font-main);
+  font-size: 22px; font-weight: 700;
+  color: white; margin-bottom: 4px;
+}
+.profile-bairro { font-size: 14px; color: rgba(255,255,255,0.6); }
+
+.profile-stats {
+  display: flex; gap: 0;
+  margin: 16px 0 0;
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.profile-stat {
+  flex: 1; padding: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.profile-stat:last-child { border-right: none; }
+.profile-stat-val {
+  font-family: var(--font-main);
+  font-size: 20px; font-weight: 700; color: white;
+}
+.profile-stat-lbl { font-size: 10px; color: rgba(255,255,255,0.6); font-weight: 500; }
+
+.profile-body { padding: 20px 16px 100px; }
+
+.badge-section-title {
+  font-family: var(--font-main);
+  font-size: 16px; font-weight: 700;
+  color: var(--gray-800); margin-bottom: 12px;
+}
+
+.badges-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.badge-card {
+  flex: 1;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 16px 10px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid transparent;
+  cursor: pointer; transition: all 0.2s;
+}
+.badge-card.earned { border-color: var(--yellow); }
+.badge-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.badge-emoji { font-size: 32px; margin-bottom: 6px; }
+.badge-name { font-size: 12px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+.badge-desc { font-size: 10px; color: var(--gray-400); }
+.badge-locked { filter: grayscale(1) opacity(0.5); }
+
+.recent-activity { margin-top: 4px; }
+.activity-item {
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+.activity-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.activity-text { flex: 1; }
+.activity-title { font-size: 13px; font-weight: 600; color: var(--gray-800); }
+.activity-date { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+.activity-pts {
+  font-size: 12px; font-weight: 700; color: var(--green-mid);
+}
+
+/* ---- SUCCESS SCREEN ---- */
+#screen-success {
+  background: var(--white);
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 40px 28px;
+}
+
+.success-animation {
+  width: 100px; height: 100px;
+  background: var(--green-pale);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  animation: successPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes successPop {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.success-check {
+  font-size: 50px;
+}
+.success-title {
+  font-family: var(--font-main);
+  font-size: 26px; font-weight: 700;
+  color: var(--green-dark); margin-bottom: 10px;
+}
+.success-sub {
+  font-size: 15px; color: var(--gray-400); line-height: 1.6; margin-bottom: 32px;
+}
+.success-id {
+  background: var(--green-pale);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  margin-bottom: 28px;
+  display: inline-block;
+}
+.success-id-label { font-size: 12px; color: var(--gray-400); }
+.success-id-val { font-family: var(--font-main); font-size: 22px; font-weight: 700; color: var(--green-dark); }
+
+/* ---- SCROLLABLE CONTENT ---- */
+.scroll-content { flex: 1; overflow-y: auto; }
+.scroll-content::-webkit-scrollbar { display: none; }
+
+/* ---- BOTTOM SPACER ---- */
+.bottom-spacer { height: 80px; }
+
+/* ---- TOAST ---- */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--gray-800); color: white;
+  padding: 12px 20px; border-radius: 30px;
+  font-size: 13px; font-weight: 500;
+  z-index: 1000; transition: transform 0.3s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ---- PROGRESS BAR ---- */
+.progress-bar-wrap { margin-top: 12px; }
+.progress-track {
+  height: 6px; background: var(--gray-100);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--green-mid);
+  border-radius: 3px; transition: width 0.4s ease;
+}
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--gray-400); margin-top: 4px;
+}
+
+/* Accessibility mode */
+body.accessible {
+  --green-dark: #0D3D2E;
+  --green-mid: #1A6B3E;
+  font-size: 18px;
+}
+body.accessible .nav-label { font-size: 12px; }
+body.accessible .occ-title, body.accessible .service-name { font-size: 16px; }
+
+/* Highlight active FAB area */
+.map-fab-area {
+  position: relative;
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ===================== LOGIN ===================== -->
+<div class="screen active" id="screen-login">
+  <div class="login-bg-pattern"></div>
+  <div class="login-top">
+    <div class="login-logo">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="16" stroke="white" stroke-width="2" opacity="0.4"/>
+        <path d="M20 6C12.27 6 6 12.27 6 20C6 27.73 12.27 34 20 34" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 6C27.73 6 34 12.27 34 20C34 27.73 27.73 34 20 34" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="20" cy="20" r="4" fill="white"/>
+        <path d="M20 10 L22 18 L20 16 L18 18 Z" fill="white"/>
+      </svg>
+    </div>
+    <div class="login-title">Cidadão Ativo</div>
+    <div class="login-slogan">Tecnologia e cidadania a serviço da comunidade.</div>
+  </div>
+  <div class="login-card">
+    <h2>Bem-vindo!</h2>
+    <p>Acesse sua conta para participar da comunidade e acompanhar sua cidade.</p>
+
+    <button class="btn-google" onclick="goTo('screen-onboard')">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Entrar com Google
+    </button>
+
+    <div class="divider"><span>ou continue com e-mail</span></div>
+
+    <button class="btn-primary" onclick="goTo('screen-onboard')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Entrar com E-mail
+    </button>
+
+    <div class="accessibility-row">
+      <button class="btn-access" onclick="toggleAccessible()">
+        <span>🔡</span>
+        <span>Acessível</span>
+      </button>
+      <button class="btn-access" onclick="toggleContrast()">
+        <span>◑</span>
+        <span>Contraste</span>
+      </button>
+      <button class="btn-access" onclick="showToast('Fonte ampliada ativada')">
+        <span>A+</span>
+        <span>Fonte</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ONBOARDING ===================== -->
+<div class="screen" id="screen-onboard">
+  <div class="onboard-header">
+    <div class="onboard-step">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+    <h2 id="onboard-title">Onde você mora?</h2>
+    <p id="onboard-sub">Isso nos ajuda a mostrar ocorrências do seu bairro.</p>
+  </div>
+  <div class="onboard-body scroll-content" id="onboard-step-1">
+    <div class="form-group">
+      <label>Bairro</label>
+      <input class="form-input" type="text" placeholder="Ex: Centro, Vila Nova..." />
+    </div>
+    <div class="form-group">
+      <label>Rua aproximada <span style="color:var(--gray-400);font-weight:400">(opcional)</span></label>
+      <input class="form-input" type="text" placeholder="Ex: Rua das Flores..." />
+    </div>
+  </div>
+  <div class="onboard-body scroll-content" id="onboard-step-2" style="display:none">
+    <div class="form-group">
+      <label>Faixa etária</label>
+      <div class="chip-group">
+        <div class="chip" onclick="selectChip(this)">16–25 anos</div>
+        <div class="chip" onclick="selectChip(this)">26–40 anos</div>
+        <div class="chip selected" onclick="selectChip(this)">41–60 anos</div>
+        <div class="chip" onclick="selectChip(this)">60+ anos</div>
+        <div class="chip" onclick="selectChip(this)">Prefiro não informar</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Telefone <span style="color:var(--gray-400);font-weight:400">(opcional)</span></label>
+      <input class="form-input" type="tel" placeholder="(00) 00000-0000" />
+    </div>
+  </div>
+  <div class="onboard-body scroll-content" id="onboard-step-3" style="display:none">
+    <p style="font-size:15px;color:var(--gray-600);margin-bottom:20px;line-height:1.6">Tudo pronto! Você está a um passo de começar a contribuir com sua comunidade.</p>
+    <div style="background:var(--green-pale);border-radius:var(--radius-md);padding:18px;margin-bottom:20px">
+      <div style="font-size:28px;margin-bottom:8px">🏘️</div>
+      <div style="font-family:var(--font-main);font-size:16px;font-weight:700;color:var(--green-dark);margin-bottom:4px">Bairro: Centro</div>
+      <div style="font-size:13px;color:var(--gray-600)">Você receberá alertas e ocorrências desta região.</div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm)">
+      <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:10px">🔔 Preferências de notificação</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--gray-600)">
+          <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--green-mid)"> Novas ocorrências no bairro
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--gray-600)">
+          <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--green-mid)"> Atualizações de ocorrências seguidas
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--gray-600)">
+          <input type="checkbox" style="width:18px;height:18px;accent-color:var(--green-mid)"> Alertas da prefeitura
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="onboard-footer">
+    <button class="btn-primary" id="onboard-btn" onclick="nextOnboard()">Continuar →</button>
+  </div>
+</div>
+
+<!-- ===================== HOME ===================== -->
+<div class="screen" id="screen-home">
+  <div class="scroll-content">
+    <div class="home-header">
+      <div>
+        <div class="home-greeting">Boa tarde,</div>
+        <div class="home-name">Marcos Silva 👋</div>
+      </div>
+      <div class="home-avatar">👤</div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-fab-area">
+      <div class="map-container">
+        <div class="map-mock">
+          <!-- Roads H -->
+          <div class="map-road-h" style="top:35%;left:0;right:0"></div>
+          <div class="map-road-h" style="top:60%;left:0;right:0;height:12px"></div>
+          <div class="map-road-h" style="top:20%;left:20%;right:30%"></div>
+          <!-- Roads V -->
+          <div class="map-road-v" style="left:40%;top:0;bottom:0"></div>
+          <div class="map-road-v" style="left:70%;top:0;bottom:0;width:12px"></div>
+          <div class="map-road-v" style="left:20%;top:15%;bottom:20%"></div>
+          <!-- Labels -->
+          <div class="map-label" style="top:31%;left:4%">Av. Principal</div>
+          <div class="map-label" style="top:58%;left:2%;transform:none">Rua das Flores</div>
+          <!-- Markers -->
+          <div class="map-marker yellow" style="top:25%;left:15%"><span>💡</span></div>
+          <div class="map-marker red" style="top:42%;left:55%"><span>🕳️</span></div>
+          <div class="map-marker blue" style="top:15%;left:65%"><span>🚌</span></div>
+          <div class="map-marker green" style="top:65%;left:30%"><span>🗑️</span></div>
+          <div class="map-marker yellow" style="top:50%;left:78%"><span>💡</span></div>
+          <!-- Current location -->
+          <div style="position:absolute;top:38%;left:42%;transform:translate(-50%,-50%)">
+            <div style="width:16px;height:16px;background:var(--blue);border-radius:50%;border:3px solid white;box-shadow:0 0 0 6px rgba(59,125,216,0.2)"></div>
+          </div>
+        </div>
+        <div class="map-controls">
+          <button class="map-btn">+</button>
+          <button class="map-btn">−</button>
+        </div>
+        <button class="map-my-loc">📍 Minha localização</button>
+      </div>
+      <button class="fab" style="position:absolute;right:28px;bottom:-20px" onclick="goTo('screen-report')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+
+    <!-- Alerts -->
+    <div class="section-header" style="margin-top:24px">
+      <div class="section-title">⚡ Alertas Ativos</div>
+      <button class="section-link">Ver todos</button>
+    </div>
+    <div class="alerts-row">
+      <div class="alert-card yellow">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-title">Trânsito intenso</div>
+        <div class="alert-sub">Av. Brasil - congestionamento</div>
+      </div>
+      <div class="alert-card blue">
+        <div class="alert-icon">🚰</div>
+        <div class="alert-title">Manutenção</div>
+        <div class="alert-sub">Água suspensa 14h–18h</div>
+      </div>
+      <div class="alert-card red">
+        <div class="alert-icon">⛔</div>
+        <div class="alert-title">Via interditada</div>
+        <div class="alert-sub">Rua das Palmeiras</div>
+      </div>
+    </div>
+
+    <!-- Occurrences -->
+    <div class="section-header">
+      <div class="section-title">📍 Ocorrências Recentes</div>
+      <button class="section-link" onclick="goTo('screen-map')">Ver mapa</button>
+    </div>
+    <div class="occurrences-list">
+      <div class="occ-card">
+        <div class="occ-icon-wrap yellow">💡</div>
+        <div class="occ-info">
+          <div class="occ-title">Poste apagado</div>
+          <div class="occ-meta">Centro · há 2h</div>
+        </div>
+        <div class="occ-right">
+          <span class="badge badge-analysis">Em análise</span>
+          <button class="confirm-btn" onclick="confirmOcc(this)">✓ 14</button>
+        </div>
+      </div>
+      <div class="occ-card">
+        <div class="occ-icon-wrap red">🕳️</div>
+        <div class="occ-info">
+          <div class="occ-title">Buraco na via</div>
+          <div class="occ-meta">Jd. América · há 5h</div>
+        </div>
+        <div class="occ-right">
+          <span class="badge badge-open">Aberto</span>
+          <button class="confirm-btn" onclick="confirmOcc(this)">✓ 8</button>
+        </div>
+      </div>
+      <div class="occ-card">
+        <div class="occ-icon-wrap green">🗑️</div>
+        <div class="occ-info">
+          <div class="occ-title">Lixo acumulado</div>
+          <div class="occ-meta">Vila Nova · há 1d</div>
+        </div>
+        <div class="occ-right">
+          <span class="badge badge-resolved">Resolvido</span>
+          <span class="confirm-count">✓ 31</span>
+        </div>
+      </div>
+      <div class="occ-card">
+        <div class="occ-icon-wrap blue">🚌</div>
+        <div class="occ-info">
+          <div class="occ-title">Ponto de ônibus danificado</div>
+          <div class="occ-meta">Bairro Alto · há 2d</div>
+        </div>
+        <div class="occ-right">
+          <span class="badge badge-confirmed">Confirmado</span>
+          <span class="confirm-count">✓ 22</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar" id="nav-home">
+    <button class="nav-item active" onclick="navTo('home')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" onclick="navTo('map')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span class="nav-label">Mapa</span>
+    </button>
+    <button class="nav-item" onclick="navTo('report')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="nav-label">Reportar</span>
+    </button>
+    <button class="nav-item" onclick="navTo('services')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Serviços</span>
+    </button>
+    <button class="nav-item" onclick="navTo('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== MAP FULL ===================== -->
+<div class="screen" id="screen-map">
+  <div class="map-full-header">
+    <h2>🗺 Mapa Urbano</h2>
+    <button onclick="showToast('Camadas ativadas')" style="background:var(--green-pale);border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--green-dark);cursor:pointer">Camadas</button>
+  </div>
+  <div class="filter-row">
+    <div class="filter-chip active">Todas</div>
+    <div class="filter-chip">💡 Iluminação</div>
+    <div class="filter-chip">🕳️ Buracos</div>
+    <div class="filter-chip">🗑️ Lixo</div>
+    <div class="filter-chip">🚌 Transporte</div>
+    <div class="filter-chip">🌿 Ambiente</div>
+  </div>
+  <div class="map-full-container">
+    <div class="map-mock" style="height:100%">
+      <div class="heatmap-overlay"></div>
+      <div class="map-road-h" style="top:35%;left:0;right:0;height:10px"></div>
+      <div class="map-road-h" style="top:60%;left:0;right:0;height:8px"></div>
+      <div class="map-road-h" style="top:20%;left:10%;right:20%;height:6px"></div>
+      <div class="map-road-v" style="left:40%;top:0;bottom:0;width:10px"></div>
+      <div class="map-road-v" style="left:68%;top:0;bottom:0;width:14px"></div>
+      <div class="map-road-v" style="left:22%;top:10%;bottom:30%;width:6px"></div>
+      <div class="map-marker yellow" style="top:22%;left:12%"><span>💡</span></div>
+      <div class="map-marker yellow" style="top:48%;left:55%"><span>💡</span></div>
+      <div class="map-marker red" style="top:38%;left:48%"><span>🕳️</span></div>
+      <div class="map-marker red" style="top:55%;left:22%"><span>🕳️</span></div>
+      <div class="map-marker blue" style="top:18%;left:62%"><span>🚌</span></div>
+      <div class="map-marker green" style="top:62%;left:35%"><span>🗑️</span></div>
+      <div class="map-marker green" style="top:30%;left:80%"><span>🌿</span></div>
+      <div style="position:absolute;top:40%;left:44%;transform:translate(-50%,-50%)">
+        <div style="width:16px;height:16px;background:var(--blue);border-radius:50%;border:3px solid white;box-shadow:0 0 0 8px rgba(59,125,216,0.15)"></div>
+      </div>
+      <div class="map-controls">
+        <button class="map-btn">+</button>
+        <button class="map-btn">−</button>
+      </div>
+    </div>
+  </div>
+  <div class="map-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div>Iluminação</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Buracos</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Transporte</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green-mid)"></div>Lixo/Ambiente</div>
+  </div>
+  <div class="scroll-content" style="padding-bottom:20px">
+    <div style="padding:0 16px">
+      <div class="occ-card" style="margin-bottom:8px">
+        <div class="occ-icon-wrap red">🕳️</div>
+        <div class="occ-info"><div class="occ-title">Buraco profundo</div><div class="occ-meta">Rua Barão, 423 · Urgente</div></div>
+        <div class="occ-right"><span class="badge badge-open">Aberto</span><span class="confirm-count">✓ 18</span></div>
+      </div>
+      <div class="occ-card">
+        <div class="occ-icon-wrap yellow">💡</div>
+        <div class="occ-info"><div class="occ-title">3 postes apagados</div><div class="occ-meta">Av. Central, trecho</div></div>
+        <div class="occ-right"><span class="badge badge-analysis">Em análise</span><span class="confirm-count">✓ 25</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar">
+    <button class="nav-item" onclick="navTo('home')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item active" onclick="navTo('map')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span class="nav-label">Mapa</span>
+    </button>
+    <button class="nav-item" onclick="navTo('report')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="nav-label">Reportar</span>
+    </button>
+    <button class="nav-item" onclick="navTo('services')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Serviços</span>
+    </button>
+    <button class="nav-item" onclick="navTo('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== REPORT ===================== -->
+<div class="screen" id="screen-report">
+  <div class="report-header">
+    <div class="report-header-top">
+      <button class="back-btn" onclick="goTo('screen-home')">←</button>
+      <div>
+        <h2>Nova Ocorrência</h2>
+        <p>Registre um problema urbano</p>
+      </div>
+    </div>
+  </div>
+  <div class="report-body scroll-content">
+    <div class="form-group">
+      <label>Categoria do problema</label>
+      <div class="category-grid">
+        <div class="cat-item selected" onclick="selectCat(this)"><div class="cat-icon">💡</div><div class="cat-label">Iluminação</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🗑️</div><div class="cat-label">Lixo</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🕳️</div><div class="cat-label">Buracos</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">♿</div><div class="cat-label">Acessibilidade</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🚌</div><div class="cat-label">Transporte</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🚿</div><div class="cat-label">Água/Esgoto</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🛡️</div><div class="cat-label">Segurança</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🌿</div><div class="cat-label">Meio Ambiente</div></div>
+        <div class="cat-item" onclick="selectCat(this)"><div class="cat-icon">🏥</div><div class="cat-label">Saúde Pública</div></div>
+      </div>
+    </div>
+
+    <div class="photo-upload" onclick="showToast('Câmera não disponível no protótipo')">
+      <span>📷</span>
+      <span>Adicionar foto (opcional)</span>
+    </div>
+
+    <div class="gps-tag">
+      <span>📍</span>
+      <div>
+        <div class="gps-text">Localização detectada</div>
+        <div class="gps-sub">Rua das Flores, 230 — Centro</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Descrição</label>
+      <textarea class="form-textarea" placeholder="Descreva o problema brevemente..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Urgência</label>
+      <div class="chip-group">
+        <div class="chip" onclick="selectChip(this)">🟢 Baixa</div>
+        <div class="chip selected" onclick="selectChip(this)">🟡 Média</div>
+        <div class="chip" onclick="selectChip(this)">🔴 Alta</div>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+  <div class="report-footer">
+    <button class="btn-primary" onclick="submitReport()">📤 Enviar Ocorrência</button>
+  </div>
+</div>
+
+<!-- ===================== SERVICES ===================== -->
+<div class="screen" id="screen-services">
+  <div class="services-header">
+    <h2>Serviços Públicos</h2>
+    <p>Equipamentos e contatos úteis da cidade</p>
+  </div>
+  <div class="scroll-content">
+    <div class="emergency-card">
+      <div class="emergency-icon">🚨</div>
+      <div class="emergency-text">
+        <h3>Emergências</h3>
+        <p>SAMU, Bombeiros, Polícia</p>
+      </div>
+      <div class="emergency-arrow">→</div>
+    </div>
+
+    <div class="services-section">
+      <div class="services-section-title">Saúde</div>
+      <div class="service-card">
+        <div class="service-icon-wrap green">🏥</div>
+        <div class="service-info">
+          <div class="service-name">UBS Centro</div>
+          <div class="service-detail">Rua Principal, 100 · 0.8 km</div>
+        </div>
+        <div class="service-status">
+          <div class="status-dot open"></div>
+          <div class="status-text open">Aberto</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap red">💊</div>
+        <div class="service-info">
+          <div class="service-name">Farmácia Popular</div>
+          <div class="service-detail">Av. Brasil, 450 · 1.2 km</div>
+        </div>
+        <div class="service-status">
+          <div class="status-dot open"></div>
+          <div class="status-text open">Aberto</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap blue">🏢</div>
+        <div class="service-info">
+          <div class="service-name">CRAS Oeste</div>
+          <div class="service-detail">R. das Acácias, 88 · 2.1 km</div>
+        </div>
+        <div class="service-status">
+          <div class="status-dot closed"></div>
+          <div class="status-text closed">Fechado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-section">
+      <div class="services-section-title">Educação</div>
+      <div class="service-card">
+        <div class="service-icon-wrap yellow">🏫</div>
+        <div class="service-info">
+          <div class="service-name">EMEB João Paulo</div>
+          <div class="service-detail">R. das Flores, 55 · 0.5 km</div>
+        </div>
+        <div class="service-status">
+          <div class="status-dot open"></div>
+          <div class="status-text open">Aberto</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-section">
+      <div class="services-section-title">Mobilidade e Coleta</div>
+      <div class="service-card">
+        <div class="service-icon-wrap green">🚌</div>
+        <div class="service-info">
+          <div class="service-name">Linhas de Ônibus</div>
+          <div class="service-detail">Ver rotas e horários</div>
+        </div>
+        <div class="service-status">
+          <div style="font-size:20px">→</div>
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon-wrap blue">🗑️</div>
+        <div class="service-info">
+          <div class="service-name">Coleta de Lixo</div>
+          <div class="service-detail">Próxima: Terça, 7h</div>
+        </div>
+        <div class="service-status">
+          <div style="font-size:20px">📅</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+  <nav class="navbar">
+    <button class="nav-item" onclick="navTo('home')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" onclick="navTo('map')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span class="nav-label">Mapa</span>
+    </button>
+    <button class="nav-item" onclick="navTo('report')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="nav-label">Reportar</span>
+    </button>
+    <button class="nav-item active" onclick="navTo('services')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Serviços</span>
+    </button>
+    <button class="nav-item" onclick="navTo('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div class="screen" id="screen-dashboard">
+  <div class="dashboard-header">
+    <h2>📊 Dados Urbanos</h2>
+    <p>Inteligência cidadã em tempo real</p>
+  </div>
+  <div class="scroll-content">
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-value">247</span>
+        <span class="stat-label">Ocorrências este mês</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">83%</span>
+        <span class="stat-label">Taxa de resolução</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">1.2k</span>
+        <span class="stat-label">Cidadãos ativos</span>
+      </div>
+    </div>
+
+    <!-- Weekly chart -->
+    <div class="chart-card">
+      <div class="chart-title">Ocorrências — Últimos 7 dias</div>
+      <div class="bar-chart">
+        <div class="bar-wrap">
+          <div class="bar-val">12</div>
+          <div class="bar" style="height:48px;background:var(--green-mid)"></div>
+          <div class="bar-lbl">Seg</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">18</div>
+          <div class="bar" style="height:72px;background:var(--green-mid)"></div>
+          <div class="bar-lbl">Ter</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">9</div>
+          <div class="bar" style="height:36px;background:var(--green-mid)"></div>
+          <div class="bar-lbl">Qua</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">24</div>
+          <div class="bar" style="height:96px;background:var(--yellow)"></div>
+          <div class="bar-lbl">Qui</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">31</div>
+          <div class="bar" style="height:100px;background:var(--red)"></div>
+          <div class="bar-lbl">Sex</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">15</div>
+          <div class="bar" style="height:60px;background:var(--green-mid)"></div>
+          <div class="bar-lbl">Sab</div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-val">7</div>
+          <div class="bar" style="height:28px;background:var(--gray-200)"></div>
+          <div class="bar-lbl">Dom</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories chart -->
+    <div class="chart-card">
+      <div class="chart-title">Categorias mais frequentes</div>
+      <div class="h-bar-list">
+        <div class="h-bar-item">
+          <div class="h-bar-row">
+            <div class="h-bar-label">💡 Iluminação</div>
+            <div class="h-bar-track"><div class="h-bar-fill" style="width:78%;background:var(--yellow)"></div></div>
+            <div class="h-bar-count">78</div>
+          </div>
+        </div>
+        <div class="h-bar-item">
+          <div class="h-bar-row">
+            <div class="h-bar-label">🕳️ Buracos</div>
+            <div class="h-bar-track"><div class="h-bar-fill" style="width:62%;background:var(--red)"></div></div>
+            <div class="h-bar-count">62</div>
+          </div>
+        </div>
+        <div class="h-bar-item">
+          <div class="h-bar-row">
+            <div class="h-bar-label">🗑️ Lixo</div>
+            <div class="h-bar-track"><div class="h-bar-fill" style="width:45%;background:var(--green-mid)"></div></div>
+            <div class="h-bar-count">45</div>
+          </div>
+        </div>
+        <div class="h-bar-item">
+          <div class="h-bar-row">
+            <div class="h-bar-label">🚌 Transporte</div>
+            <div class="h-bar-track"><div class="h-bar-fill" style="width:34%;background:var(--blue)"></div></div>
+            <div class="h-bar-count">34</div>
+          </div>
+        </div>
+        <div class="h-bar-item">
+          <div class="h-bar-row">
+            <div class="h-bar-label">🌿 Ambiente</div>
+            <div class="h-bar-track"><div class="h-bar-fill" style="width:21%;background:var(--green-light)"></div></div>
+            <div class="h-bar-count">21</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Neighborhoods -->
+    <div class="chart-card">
+      <div class="chart-title">Bairros com mais ocorrências</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--red-light);border-radius:10px">
+          <span style="font-size:14px;font-weight:600;color:var(--gray-800)">🏘 Centro</span>
+          <span style="font-size:13px;font-weight:700;color:var(--red)">52 ocorrências</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--yellow-light);border-radius:10px">
+          <span style="font-size:14px;font-weight:600;color:var(--gray-800)">🏘 Jd. América</span>
+          <span style="font-size:13px;font-weight:700;color:#B87A00">38 ocorrências</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--green-pale);border-radius:10px">
+          <span style="font-size:14px;font-weight:600;color:var(--gray-800)">🏘 Vila Nova</span>
+          <span style="font-size:13px;font-weight:700;color:var(--green-dark)">29 ocorrências</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--blue-light);border-radius:10px">
+          <span style="font-size:14px;font-weight:600;color:var(--gray-800)">🏘 Bairro Alto</span>
+          <span style="font-size:13px;font-weight:700;color:var(--blue)">21 ocorrências</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heatmap placeholder -->
+    <div class="chart-card" style="margin-bottom:20px">
+      <div class="chart-title">Mapa de calor — Atividade semanal</div>
+      <div class="chart-subtitle">Intensidade de ocorrências por período</div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;color:var(--gray-400);min-width:28px">Seg</span>
+        <div class="heat-row" style="flex:1">
+          <div class="heat-cell" style="background:rgba(46,139,87,0.15)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.3)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.15)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.5)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.2)"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;color:var(--gray-400);min-width:28px">Ter</span>
+        <div class="heat-row" style="flex:1">
+          <div class="heat-cell" style="background:rgba(224,83,83,0.6)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.3)"></div>
+          <div class="heat-cell" style="background:rgba(245,166,35,0.5)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.8)"></div>
+          <div class="heat-cell" style="background:rgba(245,166,35,0.3)"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;color:var(--gray-400);min-width:28px">Qua</span>
+        <div class="heat-row" style="flex:1">
+          <div class="heat-cell" style="background:rgba(46,139,87,0.1)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.25)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.1)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.15)"></div>
+          <div class="heat-cell" style="background:rgba(46,139,87,0.4)"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px">
+        <span style="font-size:11px;color:var(--gray-400);min-width:28px">Qui</span>
+        <div class="heat-row" style="flex:1">
+          <div class="heat-cell" style="background:rgba(224,83,83,0.4)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.7)"></div>
+          <div class="heat-cell" style="background:rgba(245,166,35,0.6)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.5)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.9)"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span style="font-size:11px;color:var(--gray-400);min-width:28px">Sex</span>
+        <div class="heat-row" style="flex:1">
+          <div class="heat-cell" style="background:rgba(224,83,83,0.85)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.95)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.7)"></div>
+          <div class="heat-cell" style="background:rgba(245,166,35,0.8)"></div>
+          <div class="heat-cell" style="background:rgba(224,83,83,0.6)"></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:10px;justify-content:flex-end">
+        <span style="font-size:11px;color:var(--gray-400)">Menos</span>
+        <div style="display:flex;gap:3px">
+          <div style="width:12px;height:12px;border-radius:3px;background:rgba(46,139,87,0.1)"></div>
+          <div style="width:12px;height:12px;border-radius:3px;background:rgba(245,166,35,0.4)"></div>
+          <div style="width:12px;height:12px;border-radius:3px;background:rgba(224,83,83,0.5)"></div>
+          <div style="width:12px;height:12px;border-radius:3px;background:rgba(224,83,83,0.9)"></div>
+        </div>
+        <span style="font-size:11px;color:var(--gray-400)">Mais</span>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+  <nav class="navbar">
+    <button class="nav-item" onclick="navTo('home')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" onclick="navTo('map')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span class="nav-label">Mapa</span>
+    </button>
+    <button class="nav-item" onclick="navTo('report')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="nav-label">Reportar</span>
+    </button>
+    <button class="nav-item" onclick="navTo('services')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Serviços</span>
+    </button>
+    <button class="nav-item active" onclick="navTo('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== PROFILE ===================== -->
+<div class="screen" id="screen-profile">
+  <div class="scroll-content">
+    <div class="profile-header">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-level-badge">⭐ Nível 3</div>
+      </div>
+      <div class="profile-name">Marcos Silva</div>
+      <div class="profile-bairro">📍 Centro · Cidadão desde Jan/2024</div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-val">23</div>
+          <div class="profile-stat-lbl">Registros</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-val">147</div>
+          <div class="profile-stat-lbl">Confirmações</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-val">4</div>
+          <div class="profile-stat-lbl">Bairros</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-body">
+      <!-- Progress to next level -->
+      <div style="background:var(--white);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:14px;font-weight:700;color:var(--gray-800)">Progresso — Nível 4</span>
+          <span style="font-size:13px;color:var(--gray-400)">680 / 1000 pts</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:68%"></div>
+        </div>
+        <div class="progress-label">
+          <span>Guardião do Bairro</span>
+          <span>320 pts restantes</span>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="badge-section-title">🏅 Conquistas</div>
+      <div class="badges-row">
+        <div class="badge-card earned">
+          <div class="badge-emoji">🏘️</div>
+          <div class="badge-name">Morador Ativo</div>
+          <div class="badge-desc">10 registros</div>
+        </div>
+        <div class="badge-card earned">
+          <div class="badge-emoji">🛡️</div>
+          <div class="badge-name">Guardião do Bairro</div>
+          <div class="badge-desc">50 confirmações</div>
+        </div>
+        <div class="badge-card badge-locked">
+          <div class="badge-emoji">🌿</div>
+          <div class="badge-name">Fiscal Ambiental</div>
+          <div class="badge-desc">5 registros ambientais</div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="badge-section-title" style="margin-top:8px">📋 Atividade Recente</div>
+      <div class="recent-activity">
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--yellow-light)">💡</div>
+          <div class="activity-text">
+            <div class="activity-title">Registrou: Poste apagado</div>
+            <div class="activity-date">Hoje · Centro</div>
+          </div>
+          <div class="activity-pts">+15 pts</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--blue-light)">✓</div>
+          <div class="activity-text">
+            <div class="activity-title">Confirmou 3 ocorrências</div>
+            <div class="activity-date">Ontem</div>
+          </div>
+          <div class="activity-pts">+9 pts</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--red-light)">🕳️</div>
+          <div class="activity-text">
+            <div class="activity-title">Registrou: Buraco na via</div>
+            <div class="activity-date">Há 3 dias · Jd. América</div>
+          </div>
+          <div class="activity-pts">+15 pts</div>
+        </div>
+        <div class="activity-item">
+          <div class="activity-icon" style="background:var(--green-pale)">🏅</div>
+          <div class="activity-text">
+            <div class="activity-title">Conquista desbloqueada!</div>
+            <div class="activity-date">Há 5 dias · Guardião do Bairro</div>
+          </div>
+          <div class="activity-pts">+50 pts</div>
+        </div>
+      </div>
+
+      <!-- Dashboard shortcut -->
+      <div style="background:linear-gradient(135deg,var(--green-dark),var(--green-mid));border-radius:var(--radius-md);padding:16px;margin-top:16px;cursor:pointer;display:flex;align-items:center;gap:12px" onclick="goTo('screen-dashboard')">
+        <div style="font-size:28px">📊</div>
+        <div>
+          <div style="font-family:var(--font-main);font-size:15px;font-weight:700;color:white">Ver Dados Urbanos</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:2px">Estatísticas e mapa de calor</div>
+        </div>
+        <div style="margin-left:auto;color:rgba(255,255,255,0.6);font-size:20px">→</div>
+      </div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+  <nav class="navbar">
+    <button class="nav-item" onclick="navTo('home')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" onclick="navTo('map')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1,6 1,22 8,18 16,22 23,18 23,2 16,6 8,2"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span class="nav-label">Mapa</span>
+    </button>
+    <button class="nav-item" onclick="navTo('report')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="nav-label">Reportar</span>
+    </button>
+    <button class="nav-item" onclick="navTo('services')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span class="nav-label">Serviços</span>
+    </button>
+    <button class="nav-item active" onclick="navTo('profile')">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nav-label">Perfil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ===================== SUCCESS ===================== -->
+<div class="screen" id="screen-success">
+  <div style="width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 28px;text-align:center">
+    <div class="success-animation">
+      <div class="success-check">✅</div>
+    </div>
+    <div class="success-title">Ocorrência Registrada!</div>
+    <div class="success-sub">Seu registro foi enviado com sucesso.<br>A comunidade e a prefeitura foram notificadas.</div>
+    <div class="success-id">
+      <div class="success-id-label">Número do protocolo</div>
+      <div class="success-id-val">#2024-1847</div>
+    </div>
+    <button class="btn-primary" style="width:100%;max-width:280px;margin-bottom:12px" onclick="goTo('screen-home')">Voltar ao início</button>
+    <button style="width:100%;max-width:280px;padding:14px;background:none;border:1.5px solid var(--gray-200);border-radius:var(--radius-md);font-family:var(--font-main);font-size:14px;font-weight:600;color:var(--gray-600);cursor:pointer" onclick="goTo('screen-map')">Ver no mapa</button>
+  </div>
+</div>
+
+</div><!-- end app-shell -->
+
+<script>
+let onboardStep = 1;
+
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  document.getElementById(screenId).scrollTop = 0;
+}
+
+function navTo(section) {
+  const map = {
+    home: 'screen-home',
+    map: 'screen-map',
+    report: 'screen-report',
+    services: 'screen-services',
+    profile: 'screen-profile',
+    dashboard: 'screen-dashboard'
+  };
+  goTo(map[section]);
+}
+
+function nextOnboard() {
+  if (onboardStep === 1) {
+    onboardStep = 2;
+    document.getElementById('onboard-step-1').style.display = 'none';
+    document.getElementById('onboard-step-2').style.display = 'block';
+    document.getElementById('dot1').classList.remove('active');
+    document.getElementById('dot2').classList.add('active');
+    document.getElementById('onboard-title').textContent = 'Quem é você?';
+    document.getElementById('onboard-sub').textContent = 'Nos ajuda a personalizar sua experiência.';
+  } else if (onboardStep === 2) {
+    onboardStep = 3;
+    document.getElementById('onboard-step-2').style.display = 'none';
+    document.getElementById('onboard-step-3').style.display = 'block';
+    document.getElementById('dot2').classList.remove('active');
+    document.getElementById('dot3').classList.add('active');
+    document.getElementById('onboard-title').textContent = 'Tudo pronto!';
+    document.getElementById('onboard-sub').textContent = 'Configure suas preferências de notificação.';
+    document.getElementById('onboard-btn').textContent = '🚀 Começar a usar';
+  } else {
+    goTo('screen-home');
+  }
+}
+
+function selectChip(el) {
+  const group = el.closest('.chip-group');
+  if (group) {
+    group.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  }
+  el.classList.add('selected');
+}
+
+function selectCat(el) {
+  document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function confirmOcc(btn) {
+  const parts = btn.textContent.replace('✓ ', '').trim();
+  const count = parseInt(parts) + 1;
+  btn.textContent = '✓ ' + count;
+  btn.style.color = 'var(--green-mid)';
+  btn.style.background = 'var(--green-pale)';
+  showToast('Ocorrência confirmada! +3 pts');
+}
+
+function submitReport() {
+  goTo('screen-success');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function toggleAccessible() {
+  document.body.classList.toggle('accessible');
+  showToast(document.body.classList.contains('accessible') ? 'Modo acessível ativado' : 'Modo acessível desativado');
+}
+
+function toggleContrast() {
+  document.body.style.filter = document.body.style.filter ? '' : 'contrast(1.25)';
+  showToast('Alto contraste alternado');
+}
+
+// Filter chips interaction
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    this.classList.add('active');
+    showToast('Filtro aplicado: ' + this.textContent);
+  });
+});
+</script>
+</body>
+</html>
